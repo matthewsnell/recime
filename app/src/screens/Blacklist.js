@@ -15,10 +15,10 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Platform,
-  SelectList,
+  Button,
 } from 'react-native';
 
-
+import { SelectList } from 'react-native-dropdown-select-list'
 
 import Card from './Card';
 console.disableYellowBox = true;
@@ -31,6 +31,27 @@ const imageUrl =
   'https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png';
 
 const BlackList = () => {
+
+  const [selected, setSelected] = React.useState("");
+  
+  const data = [
+      {key:'1', value:'Mobiles', disabled:true},
+      {key:'2', value:'Appliances'},
+      {key:'3', value:'Cameras'},
+      {key:'4', value:'Computers', disabled:true},
+      {key:'5', value:'Vegetables'},
+      {key:'6', value:'Diary Products'},
+      {key:'7', value:'Drinks'},
+  ]
+
+  return(
+    <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={data} 
+        save="value"
+    />
+  )
+
   const [dataSource, setDataSource] = useState([]);
 
   const setAnimation = () => {
@@ -54,6 +75,7 @@ const BlackList = () => {
   const addItem = (() => {
     let key = dataSource.length;
     return () => {
+      <Text>test</Text>
       dataSource.unshift({
         key,
         uri: imageUrl,
@@ -67,7 +89,7 @@ const BlackList = () => {
     };
   })();
 
-  removeItem = (key) => {
+  const removeItem = (key) => {
     setAnimation();
     setDataSource(
          dataSource.slice().filter((item) => item.key !== key)
