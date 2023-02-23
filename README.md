@@ -32,7 +32,6 @@ Link to the repo can be found here:
 https://bitbucket.org/mattsnell-admin/experimental-systems/src/main/
 
 ### What is this repository for?
-### What is this repository for?
 
 - Quick summary
 - Version
@@ -41,7 +40,6 @@ https://bitbucket.org/mattsnell-admin/experimental-systems/src/main/
 - Version
 - [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-### How do I get set up?
 ### How do I get set up?
 
 - Summary of set up
@@ -58,7 +56,6 @@ https://bitbucket.org/mattsnell-admin/experimental-systems/src/main/
 - Deployment instructions
 
 ### Contribution guidelines
-### Contribution guidelines
 
 - Writing tests
 - Code review
@@ -67,7 +64,6 @@ https://bitbucket.org/mattsnell-admin/experimental-systems/src/main/
 - Code review
 - Other guidelines
 
-### Who do I talk to?
 ### Who do I talk to?
 
 - Regarding permissions please speak to Matt
