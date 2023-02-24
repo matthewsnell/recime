@@ -26,13 +26,7 @@ const Card = (props) => {
           paddingVertical: 10
       }}
     >
-      <TouchableOpacity
-        onPress={() => removeItem(key)}
-        style={styles.container}>
-        <Image
-            style={styles.thumbnail}
-            source={{uri}}
-        />
+      <View style={styles.container}>
         <View style={styles.metaDataContainer}>
           <View style={styles.metaDataContent}>
             <Text style={styles.title}>
@@ -43,7 +37,13 @@ const Card = (props) => {
             </Text>
           </View>
         </View>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => removeItem(key)}>
+          <Image
+              style={styles.thumbnail}
+              source={{uri}}
+          />
+        </TouchableOpacity>
+      </View>
     </Animated.View>
   );
 };
@@ -65,13 +65,14 @@ const styles = StyleSheet.create({
     height: 70,
   },
   metaDataContent: {
-    marginTop: 5,
-    marginLeft: 15,
+    marginTop: 10,
+    marginLeft: 0,
   },
   title: {
     color: '#444',
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: 'bold',
+    //textAlign: 'center'
   },
   description: {
     fontSize: 16,

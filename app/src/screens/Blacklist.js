@@ -6,16 +6,16 @@ import React, {useState} from 'react';
 
 // import all the components we are going to use
 import {
-  Text,
+  //Text,
   View,
-  StyleSheet,
+  //StyleSheet,
   FlatList,
   UIManager,
   LayoutAnimation,
-  TouchableOpacity,
+  //TouchableOpacity,
   SafeAreaView,
   Platform,
-  Button,
+  //Button,
 } from 'react-native';
 
 import { SelectList } from 'react-native-dropdown-select-list'
@@ -28,29 +28,21 @@ if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 const imageUrl =
-  'https://raw.githubusercontent.com/AboutReact/sampleresource/master/logosmalltransparen.png';
+  'https://www.pngkey.com/png/full/432-4322160_cancel-close-cross-delete-for-multiplication-remove-cross.png';
 
 const BlackList = () => {
 
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = useState("");
   
   const data = [
-      {key:'1', value:'Mobiles', disabled:true},
-      {key:'2', value:'Appliances'},
-      {key:'3', value:'Cameras'},
-      {key:'4', value:'Computers', disabled:true},
-      {key:'5', value:'Vegetables'},
-      {key:'6', value:'Diary Products'},
-      {key:'7', value:'Drinks'},
+      {key:'1', value:'Vegetarian'},
+      {key:'2', value:'Vegan'},
+      {key:'3', value:'Red meat'},
+      {key:'4', value:'Eggs'},
+      {key:'5', value:'Milk'},
+      {key:'6', value:'Nuts'},
+      {key:'7', value:'Dairy'},
   ]
-
-  return(
-    <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        data={data} 
-        save="value"
-    />
-  )
 
   const [dataSource, setDataSource] = useState([]);
 
@@ -75,12 +67,11 @@ const BlackList = () => {
   const addItem = (() => {
     let key = dataSource.length;
     return () => {
-      <Text>test</Text>
       dataSource.unshift({
         key,
         uri: imageUrl,
-        title: 'Animated FlatList Example Heading' + key,
-        description: 'Please visit www.aboutreact.com',
+        title: selected,
+        //description: 'Description',
         animated: true,
       });
       setAnimation();
@@ -116,40 +107,32 @@ const BlackList = () => {
     );
   };
 
-  const getItem = (item) => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
-  };
+  // const getItem = (item) => {
+  //   // Function for click on an item
+  //   alert('Id : ' + item.id + ' Title : ' + item.title);
+  // };
 
   //const [selected, setSelected] = React.useState("");
-  
-  // const data = [
-  //     {key:'1', value:'Mobiles', disabled:true},
-  //     {key:'2', value:'Appliances'},
-  //     {key:'3', value:'Cameras'},
-  //     {key:'4', value:'Computers', disabled:true},
-  //     {key:'5', value:'Vegetables'},
-  //     {key:'6', value:'Diary Products'},
-  //     {key:'7', value:'Drinks'},
-  // ]
-
-  // return(
-  //   <SelectList 
-  //       setSelected={(val) => setSelected(val)} 
-  //       data={data} 
-  //       save="value"
-  //   />
-  // );
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <TouchableOpacity
+      <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={data} 
+        save="value"
+        onSelect={addItem}
+        notFoundText="Try different wording or scroll"
+        //val={{ key:'0', value:"Click to add blacklist item" }}
+        placeholder="Click to add blacklist item"
+        //defaultOption={{ key:'0', value:"Click to add blacklist item" }}
+      />
+      {/* <TouchableOpacity
         style={styles.addButtonStyle}
         onPress={addItem}>
         <Text style={styles.addIconStyle}>
             Click to add list item
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <FlatList
         data={dataSource}
         keyExtractor={(item, index) => index.toString()}
@@ -160,21 +143,21 @@ const BlackList = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  addButtonStyle: {
-    width: '100%',
-    elevation: 3,
-    backgroundColor: '#808080',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 15,
-  },
-  addIconStyle: {
-    color: 'white',
-    padding: 10,
-    fontSize: 20,
-    textAlign: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   addButtonStyle: {
+//     width: '100%',
+//     elevation: 3,
+//     backgroundColor: '#808080',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginBottom: 15,
+//   },
+//   addIconStyle: {
+//     color: 'white',
+//     padding: 10,
+//     fontSize: 20,
+//     textAlign: 'center',
+//   },
+// });
 
 export default BlackList;
