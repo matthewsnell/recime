@@ -14,7 +14,11 @@ const swaggerDefinition = {
     tags: [
       {
         name: 'Pantry',
-        description: "Pantry endpoints"
+        description: 'Pantry endpoints'
+      }, 
+      {
+        name: 'Ingredients',
+        description: 'Ingredients endpoints'
       }
     ],
     components: {
@@ -68,6 +72,43 @@ const swaggerDefinition = {
               type: 'int',
               example: 1
             }
+          }
+        },
+        ingredient: {
+          type: 'object',
+          properties: {
+            ingredientID: {
+              type: 'integer'
+            },
+            name: {
+              type: 'string',
+              example: 'Chicken Breast'
+            },
+            standardUnit: {
+              type: 'string',
+              example: 'grams'
+            },
+            carbonPerUnit: {
+              type: 'integer',
+              example: 20
+            },
+          }
+        },
+        ingredientPost: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              example: 'Chicken Breast'
+            },
+            standardUnit: {
+              type: 'string',
+              example: 'grams'
+            },
+            carbonPerUnit: {
+              type: 'integer',
+              example: 20
+            },
           }
         }
       }

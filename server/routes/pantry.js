@@ -10,14 +10,7 @@ const {param, body, validationResult} = require('express-validator')
  *     tags:
  *       - Pantry
  *     summary: Retrieve all pantry items
- *     description: Retrieve all items from the pantry.
- *     parameters:
- *       -name: itemID
- *       in: param
- *       description: ID of item to retrieve
- *       required: true
- *       scheme: 
- *         type: integer   
+ *     description: Retrieve all items from the pantry. 
  *     responses:
  *       '200':
  *         description: Successful operation
@@ -74,7 +67,7 @@ router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
       }
   });
 
-   /**
+/**
  * @swagger
  * /pantry/{itemID}:
  *   delete:
@@ -94,7 +87,7 @@ router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
  *         description: Successful operation
  *         content:
  *       '400':
- *          description: Invalid ID or body
+ *          description: Invalid
  *           
 */
 router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
@@ -153,6 +146,7 @@ router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
  *     tags:
  *       - Pantry
  *     summary: Update a specific item 
+ *     description: Note only one or more of the properties is required.
  *     parameters:
  *       - name: itemID
  *         in: path

@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('./db');
 
 function getAll() {
     const data = db.query('SELECT * FROM pantry', []);
@@ -22,7 +22,6 @@ function createItem(pantryObj) {
         error.statusCode = 400;
         throw error;
     }
-  
     return {message:message};
 }
 
@@ -52,15 +51,15 @@ function updateItem(id, body) {
     for (const key in body) {
         sqlStatement = sqlStatement + key.toString() + ' = ?'
         if (key === Object.keys(body)[Object.keys(body).length - 1]) {
-            sqlStatement = sqlStatement + ' '
+            sqlStatement = sqlStatement + ' ';;
         } else {
-            sqlStatement = sqlStatement + ', '
+            sqlStatement = sqlStatement + ', ';
         }
     }
     sqlStatement = sqlStatement + 'WHERE itemID = ?'
-    vals = Object.values(body)
-    vals.push(id)
-    const result = db.run(sqlStatement, vals)
+    vals = Object.values(body);
+    vals.push(id);
+    const result = db.run(sqlStatement, vals);
 
     if (result.changes) {
         message = 'Pantry item updated successfully';
