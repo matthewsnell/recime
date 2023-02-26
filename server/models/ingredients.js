@@ -6,7 +6,7 @@ function getAll() {
 }
 
 function getIngredient(id) {
-    const data = db.query('SELECT * FROM ingredients WHERE ingredientID = ?', [id])
+    const data = db.queryRow('SELECT * FROM ingredients WHERE ingredientID = ?', id)
     return data
 }
 

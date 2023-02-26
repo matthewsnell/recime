@@ -6,7 +6,7 @@ function getAll() {
 }
 
 function getLog(id) {
-    const data = db.query('SELECT * FROM waste WHERE itemID = ?', [id])
+    const data = db.queryRow('SELECT * FROM waste WHERE itemID = ?', id)
     return data
 }
 

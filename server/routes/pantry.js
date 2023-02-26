@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pantryModel = require('../models/pantry')
 const {param, body, validationResult} = require('express-validator')
+const {handleValidator} = require('../middleware/validation')
 
 /**
  * @swagger
@@ -55,11 +56,7 @@ router.get('/', function(req, res, next) {
  *          description: Invalid ID  
  *           
 */
-router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+router.get('/:itemID', param('itemID').isInt(),handleValidator,function(req, res, next) {
     try {
         res.status(200).json(pantryModel.getItem(req.params.itemID));
       } catch(err) {
@@ -90,16 +87,12 @@ router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
  *          description: Invalid
  *           
 */
-router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
-    const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-        }
-        try {
-            res.status(200).json(pantryModel.deleteItem(req.params.itemID));
-        } catch(err) {
-        next(err);
-        }
+router.delete('/:itemID', param('itemID').isInt(),handleValidator,function(req, res, next) {
+      try {
+          res.status(200).json(pantryModel.deleteItem(req.params.itemID));
+      } catch(err) {
+      next(err);
+      }
   });
 
 /**
@@ -126,17 +119,14 @@ router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
     body('quantity').isFloat().exists(), 
     body('dateAdded').isISO8601('yyyy-mm-dd').exists(), 
     body('dateExpiry').isISO8601('yyyy-mm-dd').exists(),
-    body('frozen').isInt({min:0, max:1}).exists(), 
+    body('frozen').isInt({min:0, max:1}).exists(),
+    handleValidator, 
     function(req, res, next) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-        }
-        try {
-            res.status(200).json(pantryModel.createItem(req.body));
-        } catch(err) {
-        next(err);
-        }
+      try {
+          res.status(200).json(pantryModel.createItem(req.body));
+      } catch(err) {
+      next(err);
+      }
   });
 
     /**
@@ -173,11 +163,8 @@ router.put('/:itemID',
     body('dateAdded').isISO8601('yyyy-mm-dd').optional(), 
     body('dateExpiry').isISO8601('yyyy-mm-dd').optional(),
     body('frozen').isInt({min:0, max:1}).optional(), 
+    handleValidator,
     function(req, res, next) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-        }
         try {
             res.status(200).json(pantryModel.updateItem(req.params.itemID, req.body));
         } catch(err) {

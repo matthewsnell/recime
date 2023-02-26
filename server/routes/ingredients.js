@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ingredientsModel = require('../models/ingredients')
 const {param, body, validationResult} = require('express-validator')
+const {handleValidator} = require('../middleware/validation')
 
 /**
  * @swagger
@@ -55,11 +56,7 @@ router.get('/', function(req, res, next) {
  *          description: Invalid ID  
  *           
 */
-router.get('/:ingredientID', param('ingredientID').isInt(),function(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+router.get('/:ingredientID', param('ingredientID').isInt(),handleValidator, function(req, res, next) {
     try {
         res.status(200).json(ingredientsModel.getIngredient(req.params.ingredientID));
       } catch(err) {
@@ -90,11 +87,8 @@ router.post('/',
 body('name').isString().exists(),
 body('standardUnit').isString().exists(),
 body('carbonPerUnit').isInt().exists(),
+handleValidator,
 function(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-    }
     try {
         res.status(200).json(ingredientsModel.createIngredient(req.body));
     } catch(err) {
@@ -124,16 +118,12 @@ function(req, res, next) {
  *          description: Invalid ID
  *           
 */
-router.delete('/:ingredientID', param('ingredientID').isInt(),function(req, res, next) {
-    const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-        }
-        try {
-            res.status(200).json(ingredientsModel.deleteIngredient(req.params.ingredientID));
-        } catch(err) {
-        next(err);
-        }
+router.delete('/:ingredientID', param('ingredientID').isInt(),handleValidator,function(req, res, next) {
+      try {
+          res.status(200).json(ingredientsModel.deleteIngredient(req.params.ingredientID));
+      } catch(err) {
+      next(err);
+      }
   });
 
   module.exports = router;

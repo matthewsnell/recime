@@ -7,7 +7,8 @@ function query(sql, params) {
 }
 
 function queryRow(sql, id) {
-  return db.prepare(sql).get(id);
+  data = db.prepare(sql).get(id)
+  return (!data ? {} : data);
 }
 
 function run(sql, params) {
@@ -24,6 +25,11 @@ function validateChanges(result, passMsg, failMsg) {
         throw error;
     }
   return message
+}
+
+function validateNotEmpty(data) {
+  console.log(data)
+  let error = new Error('ID does not exist')
 }
 
 module.exports = {

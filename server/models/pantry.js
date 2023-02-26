@@ -6,7 +6,7 @@ function getAll() {
 }
 
 function getItem(id) {
-    const data = db.query('SELECT * FROM pantry WHERE itemID = ?', [id])
+    const data = db.queryRow('SELECT * FROM pantry WHERE itemID = ?', id)
     return data
 }
 
