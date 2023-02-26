@@ -14,35 +14,18 @@ function createLog(wasteObj) {
     const result = db.run(
         'INSERT INTO waste (ingredientID, dateThrownAway, quantity) \
          VALUES (@ingredientID, @dateThrownAway, @quantity)', wasteObj);        
-    let message = 'Error in creating waste log';
-    if (result.changes) {
-      message = 'Waste log created successfully';
-    } else {
-        let error = new Error(message);
-        error.statusCode = 400;
-        throw error;
-    }
-    return {message:message};
+    return {message:db.validateChanges(result, 'Waste log created successfully', 'Error in creating waste log')};
 }
 
 function deleteLog(id) {
     const result = db.run(
         'DELETE FROM waste WHERE itemID = @id', {id: id});        
-    let message = 'Error deleting waste log';
-    if (result.changes) {
-      message = 'Waste log deleted successfully';
-    } else {
-        let error = new Error(message);
-        error.statusCode = 400;
-        throw error;
-    }
-  
-    return {message:message};
+    return {message:db.validateChanges(result, 'Waste log deleted successfully', 'Error deleting waste log')};
 }
 
 module.exports = {
     getAll,
     getLog,
     createLog,
-    
+    deleteLog
 }

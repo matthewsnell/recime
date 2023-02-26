@@ -14,8 +14,21 @@ function run(sql, params) {
   return db.prepare(sql).run(params);
 }
 
+function validateChanges(result, passMsg, failMsg) {
+  let message = failMsg;
+    if (result.changes) {
+      message = passMsg;
+    } else {
+        let error = new Error(message);
+        error.statusCode = 400;
+        throw error;
+    }
+  return message
+}
+
 module.exports = {
   query,
   queryRow, 
-  run
+  run,
+  validateChanges
 }
