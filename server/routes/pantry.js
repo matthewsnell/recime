@@ -33,7 +33,6 @@ router.get('/', function(req, res, next) {
     try {
         res.status(200).json(pantryModel.getAll());
       } catch(err) {
-        console.error(`Error while getting pantry items `, err.message);
         next(err);
       }
   });
@@ -69,7 +68,7 @@ router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-        res.status(200).json(pantryModel.getRow(req.params.itemID));
+        res.status(200).json(pantryModel.getItem(req.params.itemID));
       } catch(err) {
         next(err);
       }
@@ -94,21 +93,14 @@ router.get('/:itemID', param('itemID').isInt(),function(req, res, next) {
  *       '200':
  *         description: Successful operation
  *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                     type: string
- *                     example: Pantry item deleted successfully
  *       '400':
- *          description: Invalid ID  
+ *          description: Invalid ID or body
  *           
 */
 router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
     const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(405).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
         }
         try {
             res.status(200).json(pantryModel.deleteItem(req.params.itemID));
@@ -128,38 +120,74 @@ router.delete('/:itemID', param('itemID').isInt(),function(req, res, next) {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/pantry'
+ *             $ref: '#/components/schemas/pantryPost'
  *     responses:
  *       '200':
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                     type: string
- *                     example: Pantry item created successfully
- *                 
- *       '405':
+ *         description: Successful operation  
+ *       '400':
  *          description: Invalid request body
  *           
 */
   router.post('/', 
-    body('ingredientID').isInt(), 
-    body('quantity').isFloat(), 
-    body('dateAdded').isISO8601('yyyy-mm-dd'), 
-    body('dateExpiry').isISO8601('yyyy-mm-dd'),
-    body('frozen').isInt({min:0, max:1}), 
+    body('ingredientID').isInt().exists(), 
+    body('quantity').isFloat().exists(), 
+    body('dateAdded').isISO8601('yyyy-mm-dd').exists(), 
+    body('dateExpiry').isISO8601('yyyy-mm-dd').exists(),
+    body('frozen').isInt({min:0, max:1}).exists(), 
     function(req, res, next) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(405).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
         }
         try {
             res.status(200).json(pantryModel.createItem(req.body));
         } catch(err) {
         next(err);
+        }
+  });
+
+    /**
+ * @swagger
+ * /pantry/{itemID}:
+ *   put:
+ *     tags:
+ *       - Pantry
+ *     summary: Update a specific item 
+ *     parameters:
+ *       - name: itemID
+ *         in: path
+ *         description: ID of pantry item to update
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/pantryPost'
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '400':
+ *          description: Invalid ID or request body              
+ *           
+*/
+router.put('/:itemID', 
+    param('itemID').isInt().optional(),
+    body('ingredientID').isInt().optional(), 
+    body('quantity').isFloat().optional(), 
+    body('dateAdded').isISO8601('yyyy-mm-dd').optional(), 
+    body('dateExpiry').isISO8601('yyyy-mm-dd').optional(),
+    body('frozen').isInt({min:0, max:1}).optional(), 
+    function(req, res, next) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            res.status(200).json(pantryModel.updateItem(req.params.itemID, req.body));
+        } catch(err) {
+            next(err);
         }
   });
 

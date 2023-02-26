@@ -45,6 +45,30 @@ const swaggerDefinition = {
               example: 1
             }
           }
+        },
+        pantryPost: {
+          type: 'object',
+          properties: {
+            ingredientID: {
+              type: 'integer'
+            },
+            quantity: {
+              type: 'float',
+              example: 100.0
+            },
+            dateAdded: {
+              type: 'string',
+              example: '2023-02-24'
+            },
+            dateExpiry: {
+              type: 'string',
+              example: '2023-02-24'
+            },
+            frozen: {
+              type: 'int',
+              example: 1
+            }
+          }
         }
       }
     }

@@ -5,7 +5,7 @@ function getAll() {
     return data
 }
 
-function getRow(id) {
+function getItem(id) {
     const data = db.query('SELECT * FROM pantry WHERE itemID = ?', [id])
     return data
 }
@@ -41,9 +41,42 @@ function deleteItem(id) {
     return {message:message};
 }
 
+function updateItem(id, body) {
+    if (Object.keys(body).length === 0) {
+
+        let error = new Error('Request body can\'t be blank');
+        error.statusCode = 400;
+        throw error;
+    }
+    sqlStatement = 'UPDATE pantry SET '
+    for (const key in body) {
+        sqlStatement = sqlStatement + key.toString() + ' = ?'
+        if (key === Object.keys(body)[Object.keys(body).length - 1]) {
+            sqlStatement = sqlStatement + ' '
+        } else {
+            sqlStatement = sqlStatement + ', '
+        }
+    }
+    sqlStatement = sqlStatement + 'WHERE itemID = ?'
+    vals = Object.values(body)
+    vals.push(id)
+    const result = db.run(sqlStatement, vals)
+
+    if (result.changes) {
+        message = 'Pantry item updated successfully';
+      } else {
+          let error = new Error(message);
+          error.statusCode = 400;
+          throw error;
+      }
+    
+      return {message:message};
+}
+
 module.exports = {
     getAll,
-    getRow, 
+    getItem, 
     createItem, 
-    deleteItem
+    deleteItem,
+    updateItem
 }
