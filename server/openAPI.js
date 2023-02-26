@@ -19,6 +19,10 @@ const swaggerDefinition = {
       {
         name: 'Ingredients',
         description: 'Ingredients endpoints'
+      },
+      {
+        name: 'Waste',
+        description: 'Waste endpoints for handling food thrown away'
       }
     ],
     components: {
@@ -109,6 +113,41 @@ const swaggerDefinition = {
               type: 'integer',
               example: 20
             },
+          }
+        },
+        waste: {
+          type: 'object',
+          properties: {
+            wasteID: {
+              type: 'string'
+            },
+            ingredientID: {
+              type: 'string'
+            },
+            dateThrownAway: {
+              type: 'string',
+              example: '2023-02-26'
+            },
+            quantity: {
+              type: 'float',
+              example: '50.5'
+            }
+          }
+        },
+        wastePost: {
+          type: 'object',
+          properties: {
+            ingredientID: {
+              type: 'string'
+            },
+            dateThrownAway: {
+              type: 'string',
+              example: '2023-02-26'
+            },
+            quantity: {
+              type: 'float',
+              example: '50.5'
+            }
           }
         }
       }

@@ -5,6 +5,11 @@ function getAll() {
     return data;
 }
 
+function getIngredient(id) {
+    const data = db.query('SELECT * FROM ingredients WHERE ingredientID = ?', [id])
+    return data
+}
+
 function createIngredient(ingredientObj) {
     const result = db.run('INSERT INTO ingredients (name, standardUnit, carbonPerUnit) VALUES \
     (@name, @standardUnit, @carbonPerUnit)', ingredientObj);
@@ -37,5 +42,6 @@ function deleteIngredient(id) {
 module.exports = {
     getAll, 
     createIngredient,
-    deleteIngredient
+    deleteIngredient,
+    getIngredient
 }

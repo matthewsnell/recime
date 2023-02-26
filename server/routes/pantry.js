@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
       }
   });
 
-  /**
+/**
  * @swagger
  * /pantry/{itemID}:
  *   get:

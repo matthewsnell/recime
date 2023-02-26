@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const ingredientsModel = require('../models/ingredients')
+const wasteModel = require('../models/waste')
 const {param, body, validationResult} = require('express-validator')
 
 /**
  * @swagger
- * /ingredients:
+ * /waste:
  *   get:
  *     tags:
- *       - Ingredients
- *     summary: Retrieve all ingredients
- *     description: Retrieve all the ingredients 
+ *       - Waste
+ *     summary: Retrieve all waste
+ *     description: Retrieve all the waste logs 
  *     responses:
  *       '200':
  *         description: Successful operation
@@ -19,12 +19,12 @@ const {param, body, validationResult} = require('express-validator')
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/ingredient'
+ *                 $ref: '#/components/schemas/waste'
  *               
 */
 router.get('/', function(req, res, next) {
     try {
-        res.status(200).json(ingredientsModel.getAll());
+        res.status(200).json(wasteModel.getAll());
       } catch(err) {
         next(err);
       }
@@ -32,15 +32,15 @@ router.get('/', function(req, res, next) {
 
   /**
  * @swagger
- * /ingredients/{ingredientID}:
+ * /ingredients/{wasteID}:
  *   get:
  *     tags:
- *       - Ingredients
- *     summary: Retrieve a specific ingredient 
+ *       - Waste
+ *     summary: Retrieve a specific waste log 
  *     parameters:
- *       - name: ingredientID
+ *       - name: wasteID
  *         in: path
- *         description: ID of ingredient to return
+ *         description: ID of waste log to return
  *         required: true
  *         schema:
  *           type: integer
@@ -50,18 +50,18 @@ router.get('/', function(req, res, next) {
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/ingredient'
+ *                $ref: '#/components/schemas/waste'
  *       '400':
  *          description: Invalid ID  
  *           
 */
-router.get('/:ingredientID', param('ingredientID').isInt(),function(req, res, next) {
+router.get('/:wasteID', param('wasteID').isInt(),function(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-        res.status(200).json(ingredientsModel.getIngredient(req.params.ingredientID));
+        res.status(200).json(wasteModel.getLog(req.params.wasteID));
       } catch(err) {
         next(err);
       }
@@ -69,16 +69,16 @@ router.get('/:ingredientID', param('ingredientID').isInt(),function(req, res, ne
 
   /**
  * @swagger
- * /ingredients:
+ * /waste:
  *   post:
  *     tags:
- *       - Ingredients
- *     summary: Add a new ingredient 
+ *       - Waste
+ *     summary: Add a new waste log 
  *     requestBody:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ingredientPost'
+ *             $ref: '#/components/schemas/wastePost'
  *     responses:
  *       '200':
  *         description: Successful operation  
@@ -87,16 +87,16 @@ router.get('/:ingredientID', param('ingredientID').isInt(),function(req, res, ne
  *           
 */
 router.post('/', 
-body('name').isString().exists(),
-body('standardUnit').isString().exists(),
-body('carbonPerUnit').isInt().exists(),
+body('ingredientID').isInt().exists(),
+body('dateThrownAway').isISO8601('yyyy-mm-dd').exists(),
+body('quantity').isFloat().exists(),
 function(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
     }
     try {
-        res.status(200).json(ingredientsModel.createIngredient(req.body));
+        res.status(200).json(wasteModel.createLog(req.body));
     } catch(err) {
     next(err);
     }
@@ -104,15 +104,15 @@ function(req, res, next) {
 
 /**
  * @swagger
- * /ingredients/{ingredientID}:
+ * /waste/{wasteID}:
  *   delete:
  *     tags:
- *       - Ingredients
- *     summary: Delete a specific ingredient 
+ *       - Waste
+ *     summary: Delete a specific waste log 
  *     parameters:
- *       - name: ingredientID
+ *       - name: wasteID
  *         in: path
- *         description: ID of ingredient to delete
+ *         description: ID of waste to delete
  *         required: true
  *         schema:
  *           type: integer
@@ -124,16 +124,16 @@ function(req, res, next) {
  *          description: Invalid ID
  *           
 */
-router.delete('/:ingredientID', param('ingredientID').isInt(),function(req, res, next) {
+router.delete('/:wasteID', param('wasteID').isInt(),function(req, res, next) {
     const errors = validationResult(req);
         if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
         }
         try {
-            res.status(200).json(ingredientsModel.deleteIngredient(req.params.ingredientID));
+            res.status(200).json(wasteModel.deleteLog(req.params.wasteID));
         } catch(err) {
         next(err);
         }
   });
 
-  module.exports = router;
+module.exports = router;
