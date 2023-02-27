@@ -1,7 +1,11 @@
 const db = require('./db');
 
 function getAll() {
-    const data = db.query('SELECT * FROM pantry', []);
+    const data = db.query(
+        'SELECT * \
+        FROM pantry\
+        INNER JOIN ingredients on ingredients.ingredientID = pantry.ingredientID', 
+    []);
     return data
 }
 
