@@ -85,11 +85,7 @@ router.get('/:wasteID', param('wasteID').isInt(),handleValidator,function(req, r
 */
 router.post('/', 
 body('ingredientID').isInt().exists(),
-<<<<<<< HEAD
 body('dateThrownAway').isInt(),
-=======
-body('dateThrownAway').toString.isISO8601('yyyymmdd').exists(),
->>>>>>> 030527c4d76840cc5f64119de2dfab51984554d7
 body('quantity').isFloat().exists(),
 handleValidator,
 function(req, res, next) {
