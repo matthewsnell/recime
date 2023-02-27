@@ -117,11 +117,7 @@ router.delete('/:itemID', param('itemID').isInt(),handleValidator,function(req, 
   router.post('/', 
     body('ingredientID').isInt().exists(), 
     body('quantity').isFloat().exists(), 
-<<<<<<< HEAD
     body('dateExpiry').isInt(),
-=======
-    body('dateExpiry').toString.isISO8601('yyyymmdd').exists(),
->>>>>>> 030527c4d76840cc5f64119de2dfab51984554d7
     body('frozen').isInt({min:0, max:1}).exists(),
     handleValidator, 
     function(req, res, next) {
@@ -163,11 +159,7 @@ router.put('/:itemID',
     param('itemID').isInt().optional(),
     body('ingredientID').isInt().optional(), 
     body('quantity').isFloat().optional(), 
-<<<<<<< HEAD
     body('dateExpiry').isInt(),
-=======
-    body('dateExpiry').toString.isISO8601('yyyymmdd').exists(),
->>>>>>> 030527c4d76840cc5f64119de2dfab51984554d7
     body('frozen').isInt({min:0, max:1}).optional(), 
     handleValidator,
     function(req, res, next) {
