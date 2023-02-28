@@ -31,7 +31,17 @@ function sortByDate(input) {
     // Nested function in order to work with the forEach
     // iterator
     function extractInfo(value) {
-        return
+        expiryWordPosition = value.search("expires ")
+        
+        if (expiryWordPosition == -1) {
+            console.log("Unable to sort ingredient due to incorrect formatting:")
+            console.log(value)
+            return
+        }
+
+        datePosition = expiryWordPosition + "expires ".length
+        date = value.substring(datePosition)
+        console.log(date)
     }
 
     input.forEach(extractInfo)
