@@ -1,5 +1,7 @@
 /*
     Expiry Sorting algorithm
+    
+    Single function export.
 
     Given input strings in the input format:
 
@@ -18,4 +20,21 @@
     Due to the lack of year indicator, issues may arise
     when handling inputs that wrap around, such as
     December and January of different years.
+
+
 */
+
+export function sortByDate(input) {
+    const expiryDates = []
+    const output = []
+
+    // Nested function in order to work with the forEach
+    // iterator
+    function extractInfo(value) {
+        return
+    }
+
+    input.forEach(extractInfo)
+
+    return strings
+}
