@@ -2,6 +2,9 @@
     Expiry Sorting algorithm
     
     Single function export.
+    Use by
+        sortByDate = require("...expiry-sorting.js")
+        where ... is the relative reference to this file.
 
     Given input strings in the input format:
 
@@ -20,8 +23,6 @@
     Due to the lack of year indicator, issues may arise
     when handling inputs that wrap around, such as
     December and January of different years.
-
-    Issues may also occur if 
 */
 
 const MONTHS_FULL = [
@@ -75,9 +76,7 @@ function getDateAsNumbers(date) {
         }
     }
 
-    console.log(dayNumber, monthNumber)
-
-    return dayNumber, monthNumber
+    return [dayNumber, monthNumber]
 }
 
 function catchExpection(value) {
@@ -86,9 +85,17 @@ function catchExpection(value) {
     return
 }
 
+function sortItems(a, b) {
+    // Sort by day if date is in the same month
+    if (a[1] == b[1]) {
+        return (a[2] - b[2])
+    }
+
+    return a[1] - b[1]
+}
+
 function sortByDate(input) {
-    const expiryDates = []
-    const output = []
+    let output = []
 
     // Nested function in order to work with the forEach
     // iterator
@@ -107,14 +114,20 @@ function sortByDate(input) {
             return
         }
 
-        let day, month = getDateAsNumbers(date)
+        dateNumbers = getDateAsNumbers(date)
+        day = dateNumbers[0]
+        month = dateNumbers[1]
+
         if (day == -1) {
             catchExpection()
             return
         }
+
+        output.push([value, month, day])
     }
 
     input.forEach(extractInfo)
+    output = output.sort(sortItems)
 
     return output
 }
