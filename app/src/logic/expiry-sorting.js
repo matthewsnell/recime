@@ -24,7 +24,7 @@
 
 */
 
-export function sortByDate(input) {
+function sortByDate(input) {
     const expiryDates = []
     const output = []
 
@@ -36,5 +36,7 @@ export function sortByDate(input) {
 
     input.forEach(extractInfo)
 
-    return strings
+    return output
 }
+
+module.exports = sortByDate
