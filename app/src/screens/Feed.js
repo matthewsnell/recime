@@ -19,8 +19,11 @@ export default function Feed({ navigation }) {
   const [loading, setLoaing] = useState(true)
   const [recipes, setRecipes] = useState([])
 
-  // 172.20.10.2
-  const pantryCallURL = `http://172.20.10.2:3000/api/pantry`
+  // change this (IPV4 address from ipconfig in command line)
+  const IPAddress  = '172.20.10.2'
+
+  const LocalHostPort = '3000'
+  const pantryCallURL = `http://${IPAddress}:${LocalHostPort}/api/pantry`
 
   useEffect(() => {
     fetch(pantryCallURL, { method: "GET" })
