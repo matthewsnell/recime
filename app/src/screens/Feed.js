@@ -1,33 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
   ScrollView,
   Image,
-  StyleSheet,
-  Modal,
   Pressable,
-  ImageBackground,
 } from "react-native";
 import tw from "twrnc";
 
 export default function Feed({ navigation }) {
   const [filterVisible, setFilterVisible] = useState(false);
 
-  const recipes = require("../test-data/maximise-ingredients-recipes.json");
+  // const backupRecipes = require("../test-data/maximise-ingredients-recipes.json");
 
-  const styles = StyleSheet.create({
-    imageProfile: {
-      width: 200,
-      height: 100,
-    },
-    innerFrame: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "rgba(0, 0, 0, .5)",
-    },
-  });
+  // Ingredients list separated by ,+
+
+
+  const [loading, setLoaing] = useState(true)
+  const [recipes, setRecipes] = useState([])
+
+  // 172.20.10.2
+  const pantryCallURL = `http://172.20.10.2:3000/api/pantry`
+
+  useEffect(() => {
+    fetch(pantryCallURL, { method: "GET" })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(pantryData => {
+
+        // My API key
+        const apiKey = "7b6470073c6246c1be8039c48fe00dd4"
+        const ingredients = pantryData.map(pantryItem => pantryItem.name)
+        const spoonacularAPICall = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredients}&number=10&ranking=2`
+      
+        // make API call
+        fetch(spoonacularAPICall)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(recipes => {
+
+            setRecipes(recipes)
+            setLoaing(false)
+
+          })
+          .catch(error => console.error('Error:', error));
+
+      })
+      .catch(error => console.error('Error:', error));
+  })
 
   return (
     <View>
@@ -46,6 +74,11 @@ export default function Feed({ navigation }) {
         </View>
       )}
       <ScrollView>
+
+        <Text>{pantry}</Text>
+
+        {!loading ?? <Text>Loading...</Text>}
+
         {recipes.map((recipe) => (
           <View key={recipe.id} style={tw`relative p-4`}>
             <View style={tw`w-full h-45 bg-black rounded-3xl`}>
@@ -76,6 +109,7 @@ export default function Feed({ navigation }) {
             </View>
           </View>
         ))}
+
       </ScrollView>
     </View>
   );
