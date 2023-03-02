@@ -49,6 +49,14 @@ function createPantryObj(ingredientID, quantity, dateExpiry, frozen) {
     };
 }
 
+function createWasteObj(ingredientID, dateThrownAway, quantity) {
+    return {
+        ingredientID: ingredientID,
+        dateThrownAway: dateThrownAway,
+        quantity: quantity,
+    };
+}
+
 function addIngredient(name, standardUnit, carbonPerUnit) {
     const ingredient = createIngredientObj(name, standardUnit, carbonPerUnit);
     try {
@@ -69,13 +77,42 @@ function addPantryItem(ingredientID, quantity, dateExpiry, frozen) {
     }
 }
 
+function addWasteItem(ingredientID, dateThrownAway, quantity) {
+    const waste = createWasteObj(ingredientID, dateThrownAway, quantity)
+    try {
+        wasteTbl.createLog(waste);
+        console.log("waste item successfully added into databse")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // makes connection to database and imports api functionality
 const ingredientTbl = require('./models/ingredients');
 const pantryTbl = require('./models/pantry');
 const wasteTbl = require('./models/waste');
 
 function poplulateImpact() {
-    //pass
+    addWasteItem(2, 20230111, 0.4);
+    addWasteItem(23, 20230117, 0.5);
+    addWasteItem(16, 20230121, 0.25);
+    addWasteItem(31, 20230123, 2.0);
+    addWasteItem(6, 20230127, 0.2);
+    addWasteItem(10, 20230129, 0.6);
+    addWasteItem(18, 20230130, 0.3);
+    addWasteItem(1, 20230131, 0.5);
+    addWasteItem(22, 20230205, 0.25);
+    addWasteItem(1, 20230205, 0.2);
+    addWasteItem(27, 20230206, 0.4);
+    addWasteItem(31, 20230207, 3.0);
+    addWasteItem(10, 20230211, 1.2);
+    addWasteItem(1, 20230213, 0.5);
+    addWasteItem(12, 20230216, 0.3);
+    addWasteItem(24, 20230221, 4.0);
+    addWasteItem(23, 20230223, 0.75);
+    addWasteItem(18, 20230224, 0.2);
+    addWasteItem(16, 20230227, 0.4);
+    addWasteItem(1, 20230228, 1.0);
 }
 
 function poplulatePantry() {

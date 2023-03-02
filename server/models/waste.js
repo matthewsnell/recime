@@ -1,11 +1,13 @@
 const db = require('./db');
+const ingredientModel = require('./ingredients');
 
-function getAll() {
+function getAll(dateBefore, dateAfter) {
     const data = db.query(
         'SELECT * \
         FROM waste\
-        INNER JOIN ingredients on ingredients.ingredientID = waste.ingredientID', 
-    []);
+        INNER JOIN ingredients on ingredients.ingredientID = waste.ingredientID\
+        and dateThrownAway < ? and dateThrownAway > ?', 
+    [dateBefore, dateAfter]);
     return data
 }
 
@@ -14,10 +16,12 @@ function getLog(id) {
     return data
 }
 
-function createLog(wasteObj) {
+function createLog(wasteObj, dateRange) {
+    carbonPerUnit = ingredientModel.getIngredient(wasteObj.ingredientID).carbonPerUnit
+    wasteObj.carbonWasted = (wasteObj.quantity * carbonPerUnit).toFixed(2)
     const result = db.run(
-        'INSERT INTO waste (ingredientID, dateThrownAway, quantity) \
-         VALUES (@ingredientID, @dateThrownAway, @quantity)', wasteObj);       
+        'INSERT INTO waste (ingredientID, dateThrownAway, quantity, carbonWasted) \
+        VALUES (@ingredientID, @dateThrownAway, @quantity, @carbonWasted)', wasteObj);
     return {message:db.validateChanges(result, 'Waste log created successfully', 'Error in creating waste log')};
 }
 
