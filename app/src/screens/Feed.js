@@ -22,7 +22,7 @@ export default function Feed({ navigation }) {
   const [recipes, setRecipes] = useState([])
 
   // change this (IPV4 address from ipconfig in command line)
-  const pantryCallURL = Constants.API_CALL_URL + `pantry`
+  const pantryCallURL = Constants.API_BASE_URL + `/pantry`
 
   useEffect(() => {
     fetch(pantryCallURL, { method: "GET" })
@@ -34,8 +34,6 @@ export default function Feed({ navigation }) {
       })
       .then(pantryData => {
 
-        // My API key
-        const apiKey = "7b6470073c6246c1be8039c48fe00dd4"
         const ingredients = pantryData.map(pantryItem => pantryItem.name)
         const spoonacularAPICall = Constants.getSpoonacularAPICall(ingredients)
       
@@ -76,8 +74,6 @@ export default function Feed({ navigation }) {
         </View>
       )}
       <ScrollView>
-
-        <Text>{pantry}</Text>
 
         {!loading ?? <Text>Loading...</Text>}
 
