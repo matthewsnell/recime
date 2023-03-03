@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+// update constants you need in 'constants.js' file
+import * as Constants from '../Constants';
 import {
   Text,
   View,
@@ -20,10 +22,7 @@ export default function Feed({ navigation }) {
   const [recipes, setRecipes] = useState([])
 
   // change this (IPV4 address from ipconfig in command line)
-  const IPAddress  = '172.20.10.2'
-
-  const LocalHostPort = '3000'
-  const pantryCallURL = `http://${IPAddress}:${LocalHostPort}/api/pantry`
+  const pantryCallURL = Constants.API_CALL_URL + `pantry`
 
   useEffect(() => {
     fetch(pantryCallURL, { method: "GET" })
@@ -38,7 +37,7 @@ export default function Feed({ navigation }) {
         // My API key
         const apiKey = "7b6470073c6246c1be8039c48fe00dd4"
         const ingredients = pantryData.map(pantryItem => pantryItem.name)
-        const spoonacularAPICall = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredients}&number=10&ranking=2`
+        const spoonacularAPICall = Constants.getSpoonacularAPICall(ingredients)
       
         // make API call
         fetch(spoonacularAPICall)

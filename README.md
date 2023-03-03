@@ -6,7 +6,7 @@
 
 3. Copy the IPv4 IP Address.
 
-4. In `app/src/screens/Feed.js` change IPAddress variable to your copied value.
+4. In `app/src/Constants.js` change IPAddress variable to your copied value.
 
 !Note = we will move this to environment variables later.
 
