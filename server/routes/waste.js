@@ -49,6 +49,53 @@ router.get('/', function(req, res, next) {
       }
   });
 
+/**
+ * @swagger
+ * /waste/carbonTotal:
+ *   get:
+ *     tags:
+ *       - Waste
+ *     summary: Return the total carbon waste
+ *     description: Return the total carbon wasted for a date range
+ *     parameters:
+ *       - name: dateBefore
+ *         in: query
+ *         description: Filter results to before dateBefore
+ *         required: false
+ *         schema:
+ *           type: integer
+*       - name: dateAfter
+ *         in: query
+ *         description: Filter results to after dateAfter
+ *         required: false
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: float
+ *                   example: 47.5
+ *                                 
+*/
+query('dateBefore').isInt().optional(),
+query('dateAfter').isInt().optional(),
+handleValidator,
+router.get('/carbonTotal', function(req, res, next) {
+    try {
+      dateBefore = 'dateBefore' in req.query ? req.query.dateBefore: 99999999
+      dateAfter = 'dateAfter' in req.query ? req.query.dateAfter: 0
+        res.status(200).json(wasteModel.sumCarbon(dateBefore, dateAfter));
+      } catch(err) {
+        next(err);
+      }
+  });
+
   /**
  * @swagger
  * /waste/{wasteID}:
